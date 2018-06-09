@@ -1,0 +1,13 @@
+site_name: Intercessor
+site_description: A data driven app framework for Python
+site_author: Geoffrey Shannon
+repo_url: https://github.com/RadicalZephyr/intercessor
+
+theme: readthedocs
+
+pages:
+- Home: index.md
+- About:
+  - Release Notes: about/changelog.md
+  - Contributing: about/contributing.md
+  - License: about/license.md
