@@ -90,6 +90,10 @@ PYTEST_OPTIONS += --no-cov --disable-warnings
 endif
 PYTEST_RERUN_OPTIONS := --last-failed --exitfirst
 
+.PHONY: auto-test
+auto-test: install
+	while true ; do find intercessor tests -type f -name '*.py' | entr -cd make test-repeat ; done
+
 .PHONY: test
 test: test-all ## Run unit and integration tests
 
@@ -109,6 +113,13 @@ test-int: install
 
 .PHONY: test-all
 test-all: install
+	@ if test -e $(FAILURES); then $(PYTEST) $(PACKAGES) $(PYTEST_RERUN_OPTIONS); fi
+	@ rm -rf $(FAILURES)
+	$(PYTEST) $(PACKAGES) $(PYTEST_OPTIONS)
+	$(COVERAGE_SPACE) $(REPOSITORY) overall
+
+.PHONY: test-repeat
+test-repeat:
 	@ if test -e $(FAILURES); then $(PYTEST) $(PACKAGES) $(PYTEST_RERUN_OPTIONS); fi
 	@ rm -rf $(FAILURES)
 	$(PYTEST) $(PACKAGES) $(PYTEST_OPTIONS)
