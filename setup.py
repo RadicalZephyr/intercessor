@@ -67,6 +67,7 @@ setuptools.setup(
 
     install_requires=[
         # TODO: Add your library's requirements here
+        "pysistence ~=0.4.1",
         "minilog ~=0.2.1",
     ]
 )
