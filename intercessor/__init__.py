@@ -12,16 +12,13 @@ class Intercessor(object):
         self._registry = {}
 
     def dispatch(self, event):
-        handler = self._registry[event[0]]
-        if handler:
+        if event[0] in self._registry:
+            handler = self._registry[event[0]]
             fx = handler[0](make_dict({'db': self._db}), event)
-            if "db" in fx:
-                self._db = fx["db"]
-            ## TODO: to make this test work I actually need a full
-            ## single interceptor thing working, and to write a
-            ## wrapper that turns an event_db handler into an event_fx
-            ## handler. Probably simpler to start with event_fx
-            ## handler
+            if 'db' in fx:
+                self._db = fx['db']
+        else:
+            pass
 
     def reg_event_fx(self, event_name):
         def handler(h):
