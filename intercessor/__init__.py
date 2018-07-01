@@ -2,7 +2,7 @@ __project__ = 'intercessor'
 __version__ = '0.0.0'
 
 VERSION = "{0} v{1}".format(__project__, __version__)
-
+import log
 from pysistence import make_dict
 
 
@@ -18,7 +18,7 @@ class Intercessor(object):
             if 'db' in fx:
                 self._db = fx['db']
         else:
-            pass
+            log.info('There is no handler registered for event "{}"'.format(event[0]))
 
     def reg_event_fx(self, event_name):
         def handler(h):
