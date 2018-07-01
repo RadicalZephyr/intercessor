@@ -28,3 +28,19 @@ def describe_app_creation():
         app.dispatch(['not-an-event'])
 
         expect(app._db) == {}
+
+    def test_reg_event_fx_with_interceptor(expect):
+        app = Intercessor()
+
+        def inc_foo(ctx):
+            db = ctx['coeffects']['db']
+            ctx.using(coeffects=ctx['coeffects'].using(db=db.using(foo=db['foo']+1)))
+
+        @app.with_after(inc_foo)
+        @app.reg_event_fx('set-foo')
+        def handle_foo(cfx, event):
+            return make_dict(db=cfx['db'].using(foo=event[1]))
+
+        app.dispatch(['set-foo', 1])
+
+        expect(app._db['foo']) == 2
